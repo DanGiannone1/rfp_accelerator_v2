@@ -2,3 +2,5 @@ node_modules
 
 .venv/
 backend/.env
+.env
+backend/__pycache__/prompts.cpython-312.pyc

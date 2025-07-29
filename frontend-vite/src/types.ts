@@ -10,6 +10,16 @@ export interface Project {
   similarity_score: number;
 }
 
+export interface AIDecision {
+  recommendation: 'PURSUE' | 'DECLINE' | 'REVIEW_REQUIRED';
+  confidence_score: number;
+  executive_summary: string;
+  key_factors: string[];
+  risk_assessment: string;
+  financial_analysis: string;
+  next_steps: string[];
+}
+
 export interface UploadResponse {
   success: boolean;
   message: string;
@@ -19,6 +29,7 @@ export interface UploadResponse {
     size: number;
   };
   similar_projects: Project[];
+  ai_decision: AIDecision;
 }
 
 export interface ApiError {

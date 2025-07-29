@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import type { Project, UploadResponse, ApiError } from '../types';
+import type { Project, AIDecision, UploadResponse, ApiError } from '../types';
 import './FileUpload.css';
 
 interface FileUploadProps {
   onUploadStart: () => void;
-  onUploadSuccess: (projects: Project[], fileName: string) => void;
+  onUploadSuccess: (projects: Project[], fileName: string, aiDecision: AIDecision) => void;
   onUploadError: () => void;
   isLoading: boolean;
 }
@@ -38,7 +38,11 @@ const FileUpload: React.FC<FileUploadProps> = ({
       );
 
       if (response.data.success) {
-        onUploadSuccess(response.data.similar_projects, response.data.file_info.original_name);
+        onUploadSuccess(
+          response.data.similar_projects, 
+          response.data.file_info.original_name,
+          response.data.ai_decision
+        );
       } else {
         throw new Error('Upload failed');
       }
@@ -77,7 +81,8 @@ const FileUpload: React.FC<FileUploadProps> = ({
         {isLoading ? (
           <div className="upload-content">
             <div className="spinner"></div>
-            <p>Processing your RFP...</p>
+            <p>🤖 Processing your RFP with AI...</p>
+            <p style={{ fontSize: '14px', opacity: 0.8 }}>This may take 30-60 seconds</p>
           </div>
         ) : isDragActive ? (
           <div className="upload-content">
@@ -89,6 +94,9 @@ const FileUpload: React.FC<FileUploadProps> = ({
             <h3>Upload RFP Document</h3>
             <p>Drag & drop your RFP document here, or click to select</p>
             <p className="file-types">Supported formats: PDF, DOC, DOCX, TXT</p>
+            <p style={{ fontSize: '14px', color: '#007bff', marginTop: '10px' }}>
+              ✨ Get instant AI-powered analysis and recommendations
+            </p>
           </div>
         )}
       </div>
